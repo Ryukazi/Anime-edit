@@ -10,7 +10,7 @@ async function searchTikTok() {
 
   const payload = {
     keywords: keyword,
-    count: 100, // Request 5 videos
+    count: 10000, // Request 5 videos
     hd: 1,
     region: 'ne'
   };
