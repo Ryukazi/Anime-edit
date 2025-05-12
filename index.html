@@ -3,18 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anime TikTok Search</title>
-  <link rel="stylesheet" href="style.css">
+  <title>TikTok Clone</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/script.js"></script>
+  <script defer src="js/darkMode.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Anime Edit- made by Denish</h1>
-    <input type="text" id="keyword" placeholder="Enter anime keywords..." />
-    <button onclick="searchTikTok()">Search</button>
+  <header>
+    <nav>
+      <img src="assets/logo.png" alt="TikTok Clone Logo" class="logo">
+      <button id="toggleMode">Toggle Mode</button>
+    </nav>
+  </header>
 
-    <div id="result" class="result"></div>
-  </div>
+  <main>
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Search TikTok videos...">
+      <button onclick="searchTikTok()">Search</button>
+    </div>
 
-  <script src="script.js"></script>
+    <div id="result" class="result">
+      <!-- TikTok videos will appear here -->
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 TikTok Clone - Made by Denish</p>
+  </footer>
 </body>
 </html>
