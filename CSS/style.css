@@ -1,0 +1,95 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #141414;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+header {
+  padding: 10px;
+  background-color: #1d1d1d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .logo {
+  width: 100px;
+}
+
+button {
+  background-color: #fe2c55;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #f42b53;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.search-container input {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  width: 70%;
+  margin-right: 10px;
+}
+
+.result {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.video-item {
+  background-color: #1a1a1a;
+  padding: 15px;
+  margin: 15px;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+video {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background-color: #121212;
+}
+
+header.dark-mode {
+  background-color: #222;
+}
+
+button.dark-mode {
+  background-color: #fe2c55;
+}
+
+button.dark-mode:hover {
+  background-color: #f42b53;
+}
+
+footer {
+  text-align: center;
+  margin-top: 50px;
+  }
