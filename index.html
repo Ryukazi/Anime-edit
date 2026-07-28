@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="CSS/style.css" />
 
   <!-- JS bundles (deferred) -->
-  <script defer src="js/darkMode.js"></script>
   <script defer src="js/player.js"></script>
   <script defer src="js/videoControls.js"></script>
   <script defer src="js/script.js"></script>
@@ -35,7 +34,6 @@
       </div>
 
       <div class="nav-right controls">
-        <button id="toggleMode" class="btn ghost" aria-pressed="false" aria-label="Toggle dark mode">🌙</button>
         <button id="mobileMenuBtn" class="btn icon mobile-only" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">☰</button>
       </div>
     </nav>
@@ -48,20 +46,22 @@
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- Hero (clean, professional) -->
   <section class="hero" aria-hidden="false">
     <div class="hero-inner">
-      <h1 class="hero-title">Find Any TikTok Video</h1>
-      <p class="hero-sub">Search, preview, and play videos with a premium anime aesthetic — fast and responsive.</p>
+      <h1 class="hero-title"><span class="brand-accent">Hi, I'm</span> Anime Edit</h1>
+      <p class="hero-sub">Search and play videos instantly — clean, fast, and focused on content. No noisy previews, just playable media.</p>
+
+      <div class="hero-tags" aria-hidden="true">
+        <span class="chip">#anime</span>
+        <span class="chip">#ui-ux</span>
+        <span class="chip">#edit</span>
+      </div>
+
       <div class="hero-cta">
         <button id="heroSearch" class="btn cta" type="button">Start Searching</button>
         <a class="hero-ghost" href="#result">Browse results</a>
       </div>
-    </div>
-    <div class="hero-visuals" aria-hidden="true">
-      <div class="glow-orb orb-1"></div>
-      <div class="glow-orb orb-2"></div>
-      <canvas id="particles" class="particles"></canvas>
     </div>
   </section>
 
@@ -86,7 +86,7 @@
     </section>
   </main>
 
-  <!-- Player overlay -->
+  <!-- Player overlay (kept for download/share/PIP but grid now has inline players) -->
   <div id="playerOverlay" class="player-overlay" hidden aria-hidden="true" role="dialog" aria-label="Video player">
     <div class="player-inner">
       <button id="playerClose" class="player-close" aria-label="Close player">✕</button>
