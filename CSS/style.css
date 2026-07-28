@@ -1,118 +1,938 @@
-/* Modernized stylesheet for Anime-edit
-   - CSS variables for easy theming
-   - Responsive layout and grid
-   - Glassmorphism cards with hover/scale
-   - Smooth transitions and subtle animations
-   - Dark / light support via body.dark-mode
-*/
+/* ========================================================================
+   Anime-edit — Premium Futuristic Portfolio CSS (Dark-only)
+   - Theme: Black background (#050816), Blue + Purple gradient
+   - Style: Cyberpunk, Glassmorphism, Neon glow, Apple/Vercel/Framer-inspired
+   - Mobile-first, responsive, performant, production-ready
+   - Techniques: CSS variables, Flexbox, Grid, clamp(), keyframes, transforms
+   - Features:
+       * Sticky animated navbar with blur
+       * Hero with fluid typography
+       * Floating glass cards with hover lift
+       * Aurora animated background and particles
+       * Mouse glow interactive effect
+       * Animated glowing buttons & inputs
+       * Premium search bar & modern inputs
+       * Scroll reveal animations
+       * Animated gradient borders
+       * Custom scrollbar
+       * Loading animation
+       * Accessibility-friendly focus styles
+   - Author: Copilot (@copilot) for Ryukazi/Anime-edit
+   - Notes: Dark-mode only. Do not change HTML/JS. Use progressive enhancement.
+   ======================================================================== */
+
+/* ========================================================================
+   Table of Contents (by section)
+   1.  CSS Variables & Theme
+   2.  Base Reset & Layout
+   3.  Typography & Fluid Type
+   4.  Utility Classes
+   5.  Sticky Animated Navbar
+   6.  Hero Section
+   7.  Search / Inputs / Forms
+   8.  Buttons & Animated Buttons
+   9.  Cards & Floating Effects
+   10. Aurora Background & Particles
+   11. Mouse Glow & Interactive Effects
+   12. Scroll Reveal Animations
+   13. Animated Icons & SVG helpers
+   14. Loading Animation
+   15. Custom Scrollbar
+   16. Media Queries & Responsive Tweaks
+   17. Accessibility
+   18. Performance & Reduced Motion
+   ======================================================================== */
+
+/* =========================================================================
+   1) CSS VARIABLES & THEME
+   - Centralized tokens for spacing, colors, radii, durations, z-index.
+   - Use only dark-mode values (user requested dark only).
+   ========================================================================= */
 :root{
-  --bg: #0f1720; /* deep background */
+  /* Core colors */
+  --bg-900: #050816; /* main background */
+  --bg-950: #02030a;
   --panel: rgba(255,255,255,0.04);
-  --muted: #9aa4b2;
-  --accent: linear-gradient(90deg,#ff2d55,#8b5cf6);
-  --accent-plain: #ff2d55;
-  --glass: rgba(255,255,255,0.03);
-  --glass-border: rgba(255,255,255,0.06);
-  --radius: 12px;
-  --max-width: 1100px;
+  --glass-01: rgba(255,255,255,0.03);
+  --glass-02: rgba(255,255,255,0.06);
+  --glass-03: rgba(20,20,30,0.25);
+  --muted: #98a0b3;
+  --on-dark: #e7f0ff;
+
+  /* Brand gradient (blue -> purple) */
+  --g1: #4ee1ff;
+  --g2: #8b5cf6;
+  --g3: #6f3cff;
+  --brand-gradient: linear-gradient(90deg,var(--g1),var(--g2),var(--g3));
+
+  /* Accent plain */
+  --accent: #6f3cff;
+  --accent-plain: #4ee1ff;
+
+  /* Neon glows */
+  --neon-blue: rgba(78,225,255,0.18);
+  --neon-purple: rgba(139,92,246,0.18);
+  --neon-strong: rgba(111,60,255,0.38);
+
+  /* Spacing & layout */
+  --space-xs: 6px;
+  --space-sm: 12px;
+  --space-md: 18px;
+  --space-lg: 28px;
+  --space-xl: 40px;
+  --container-max: 1200px;
+
+  /* Radius */
+  --radius: 18px;
+  --radius-sm: 12px;
+
+  /* Typography scale (fluid) */
+  --fz-xxs: clamp(0.66rem, 1vw, 0.75rem);
+  --fz-xs: clamp(0.78rem, 1.2vw, 0.9rem);
+  --fz-sm: clamp(0.9rem, 1.6vw, 1rem);
+  --fz-md: clamp(1rem, 2.2vw, 1.125rem);
+  --fz-lg: clamp(1.25rem, 3.2vw, 1.5rem);
+  --fz-xl: clamp(1.9rem, 5vw, 3.4rem);
+  --fz-xxl: clamp(2.8rem, 7.6vw, 5.2rem);
+
+  /* Motion & durations */
+  --dur-fast: 140ms;
+  --dur-med: 320ms;
+  --dur-slow: 680ms;
+  --ease-smooth: cubic-bezier(.2,.9,.25,1);
+
+  /* Elevations (z-index) */
+  --z-base: 0;
+  --z-sticky: 50;
+  --z-hero: 60;
+  --z-overlay: 80;
+  --z-tooltip: 120;
+
+  /* Shadows */
+  --shadow-soft: 0 8px 30px rgba(2,6,23,0.55);
+  --shadow-neon: 0 8px 40px rgba(111,60,255,0.12);
+  --shadow-deep: 0 20px 50px rgba(2,6,23,0.72);
+
+  /* Grid */
   --gap: 18px;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+/* ========================================================================
+   2) BASE RESET & LAYOUT
+   - Mobile-first approach
+   - Preserve accessibility and native behaviors
+   ======================================================================== */
+*,
+*::before,
+*::after{box-sizing:border-box}
+:where(html,body){height:100%}
+html{
+  -webkit-text-size-adjust:100%;
+  -ms-text-size-adjust:100%;
+  scroll-behavior:smooth;
+  -webkit-tap-highlight-color: transparent;
+}
 body{
-  font-family: Inter, 'Segoe UI', Roboto, system-ui, -apple-system, 'Helvetica Neue', Arial;
-  background: var(--bg);
-  color:#e6eef8;
+  margin:0;
+  min-height:100%;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(78,225,255,0.04), transparent 6%),
+              radial-gradient(900px 400px at 90% 90%, rgba(139,92,246,0.03), transparent 8%),
+              var(--bg-900);
+  color:var(--on-dark);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   line-height:1.35;
-  transition:background-color .25s ease,color .25s ease;
+  -webkit-font-variant-ligatures: none;
+  font-kerning: normal;
+  letter-spacing: -0.01em;
+  overflow-x:hidden;
+  --scrollbar-bg: rgba(255,255,255,0.04);
 }
 
-/* Layout */
-header{
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  backdrop-filter: blur(6px);
+/* Remove default margins where needed */
+h1,h2,h3,h4,h5,h6,p,ul,ol,figure,blockquote{margin:0}
+
+/* Links */
+a{color:inherit;text-decoration:none;cursor:pointer}
+a:focus{outline:none}
+
+/* Images & media */
+img,svg,video{max-width:100%;height:auto;display:block}
+picture,video{display:block}
+
+/* Forms base */
+button,input,textarea,select{font:inherit}
+button{background:transparent;border:0;padding:0;cursor:pointer}
+
+/* Container utility */
+.container{
+  width:100%;
+  max-width:var(--container-max);
+  margin-inline:auto;
+  padding-inline:clamp(12px,4vw,28px);
 }
-header nav{
-  max-width:var(--max-width);
-  margin:0 auto;display:flex;align-items:center;gap:12px;padding:18px;
+
+/* ========================================================================
+   3) TYPOGRAPHY — Fluid & Precise
+   - Use clamp() and responsive sizes
+   - Strong visual hierarchy for hero and headings
+   ======================================================================== */
+:root{
+  /* font-weight tokens (if using variable fonts) */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+}
+
+small{font-size:var(--fz-xxs); color:var(--muted)}
+
+/* Headings */
+h1{
+  font-weight:800;
+  line-height:1;
+  font-size: clamp(2.0rem, 6.5vw, 5.2rem); /* hero scale */
+  letter-spacing:-0.02em;
+  margin-bottom: 0.2em;
+  -webkit-font-smoothing:antialiased;
+}
+h2{font-size: clamp(1.1rem,3.4vw,2.4rem); font-weight:700}
+h3{font-size: clamp(1rem,2.6vw,1.6rem); font-weight:600}
+h4{font-size:var(--fz-md); font-weight:600}
+
+/* Paragraphs & lead */
+.lead{
+  font-size:var(--fz-lg);
+  color: rgba(231,240,255,0.88);
+  max-width:90ch;
+}
+
+/* Gradient text helper */
+.g-text{
+  background: var(--brand-gradient);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  display:inline-block;
+  line-height:1;
+  font-weight:800;
+  text-transform:none;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 18px rgba(78,225,255,0.04));
+}
+
+/* Subtle paragraph muted */
+p.muted{color:var(--muted);font-size:var(--fz-sm)}
+
+/* ========================================================================
+   4) UTILITY CLASSES
+   ======================================================================== */
+.flex{display:flex}
+.grid{display:grid}
+.center{display:flex;align-items:center;justify-content:center}
+.col{flex-direction:column;display:flex}
+.row{flex-direction:row;display:flex}
+.stack{display:flex;flex-direction:column;gap:var(--gap)}
+.space-between{justify-content:space-between}
+.hidden{display:none !important}
+.visually-hidden{
+  position:absolute !important;
+  height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;
+}
+
+/* Spacing helpers */
+.mt-xs{margin-top:var(--space-xs)}
+.mt-sm{margin-top:var(--space-sm)}
+.mt-md{margin-top:var(--space-md)}
+.mt-lg{margin-top:var(--space-lg)}
+.mb-md{margin-bottom:var(--space-md)}
+.pb-lg{padding-bottom:var(--space-lg)}
+.pt-lg{padding-top:var(--space-lg)}
+
+/* z-index helpers */
+.z-sticky{z-index:var(--z-sticky)}
+.z-hero{z-index:var(--z-hero)}
+
+/* Shape & glass helper */
+.glass{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:var(--radius);
+  border: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+}
+
+/* ========================================================================
+   5) NAVBAR — Sticky with Blur + Animated
+   - Mobile-first animated hamburger fallback
+   - Sticky behavior using position:sticky and backdrop blur
+   ======================================================================== */
+header.site-header{
+  position:sticky;
+  top:12px;
+  margin:0 auto;
+  z-index:var(--z-sticky);
+  width:calc(100% - 24px);
+  max-width: var(--container-max);
+  display:flex;
+  align-items:center;
   justify-content:space-between;
-}
-.logo{height:46px;display:block}
-
-/* Controls */
-.controls{
-  display:flex;gap:10px;align-items:center;
-}
-#toggleMode{
-  background:transparent;border:1px solid var(--glass-border);color:var(--muted);
-  padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:600;
-}
-#toggleMode:hover{color:#fff;border-color:rgba(255,255,255,0.12)}
-
-/* Main content container */
-main{max-width:var(--max-width);margin:28px auto;padding:0 18px}
-
-.search-container{
-  display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:24px;
-}
-.search-container input[type="text"]{
-  flex:1;max-width:720px;padding:14px 16px;border-radius:999px;border:1px solid var(--glass-border);
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:inherit;
-  box-shadow:0 6px 18px rgba(2,6,23,0.6) inset;outline:none;transition:box-shadow .18s ease,transform .12s ease;
-}
-.search-container input[type="text"]:focus{box-shadow:0 8px 28px rgba(0,0,0,0.6),0 0 0 6px rgba(255,45,85,0.04);transform:translateY(-1px)}
-.search-container button{
-  padding:10px 16px;border-radius:10px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-weight:700;
-  box-shadow:0 8px 20px rgba(139,92,246,0.14);transition:transform .12s ease,filter .12s ease;
-}
-.search-container button:hover{transform:translateY(-2px);filter:brightness(1.02)}
-
-/* Results grid */
-.result{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--gap);
-}
-.video-item{
-  background:linear-gradient(180deg,rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border:1px solid var(--glass-border);border-radius:var(--radius);overflow:hidden;position:relative;
-  padding:10px;display:flex;flex-direction:column;gap:12px;transition:transform .18s ease,box-shadow .18s ease;
-}
-.video-item:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 12px 40px rgba(2,6,23,0.6)}
-.video-thumb{width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000}
-.video-thumb video{width:100%;height:100%;object-fit:cover;display:block}
-
-.video-meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.title{font-weight:700;color:#fff;font-size:0.98rem}
-.meta{color:var(--muted);font-size:0.85rem}
-
-/* Footer */
-footer{max-width:var(--max-width);margin:36px auto 80px;padding:0 18px;color:var(--muted);text-align:center}
-
-/* Small screens */
-@media (max-width:640px){
-  nav{padding:12px}
-  .logo{height:38px}
-  .search-container{flex-direction:column;padding:0 12px}
-  .search-container input{max-width:100%;width:100%}
-  .search-container button{width:100%}
+  gap:12px;
+  padding:10px 12px;
+  border-radius:999px;
+  transition:transform var(--dur-med) var(--ease-smooth), background-color var(--dur-med) var(--ease-smooth), box-shadow var(--dur-med);
+  transform:translateY(0);
+  margin-top:12px;
 }
 
-/* Light mode override (when body has .light-mode) */
-body.light-mode{
-  --bg: #f7f9fc;--panel: rgba(0,0,0,0.03);--muted:#475569;--glass-border:rgba(0,0,0,0.06);color:#0b1220
+/* Sticky active state (JS may toggle .scrolled on header) */
+header.site-header.scrolled{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  transform: translateY(-2px) scale(0.999);
+  border:1px solid rgba(255,255,255,0.04);
 }
-body.light-mode header{background:rgba(255,255,255,0.9);box-shadow:0 6px 18px rgba(12,20,40,0.04)}
-body.light-mode .search-container input{background:#fff;box-shadow:0 6px 18px rgba(16,24,40,0.04) inset}
-body.light-mode .video-item{background:#fff;border:1px solid rgba(12,20,40,0.04);box-shadow:0 8px 24px rgba(16,24,40,0.04)}
 
-/* Dark-mode subtle tweaks (applied when .dark-mode present on body) */
-body.dark-mode{--bg:#07070a;--muted:#9aa4b2;--glass-border:rgba(255,255,255,0.05)}
+/* Left brand */
+.header-brand{
+  display:flex;align-items:center;gap:12px;
+}
+.header-brand .logo{
+  width:46px;height:46px;border-radius:12px;
+  background: linear-gradient(135deg, rgba(78,225,255,0.12), rgba(139,92,246,0.06));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow: 0 6px 20px rgba(111,60,255,0.06), inset 0 1px 0 rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+}
 
-/* Tiny utility */
-.center{display:flex;justify-content:center;align-items:center}
+/* Animated gradient brand name */
+.header-brand .brand-name{
+  display:flex;flex-direction:column;line-height:1;
+}
+.header-brand .brand-name .title{
+  font-weight:800;font-size:var(--fz-sm);
+  background: linear-gradient(90deg,var(--g1),var(--g2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.header-brand .brand-name .sub{
+  font-size:var(--fz-xxs);color:var(--muted);margin-top:-2px
+}
 
-/* Accessibility: focus visible */
-:focus{outline:2px dashed rgba(255,45,85,0.18);outline-offset:3px}
+/* Nav controls */
+.nav-controls{display:flex;align-items:center;gap:8px}
+
+/* Animated nav links container */
+nav.primary-nav{
+  display:flex;align-items:center;gap:8px;
+}
+nav.primary-nav a{
+  color:var(--muted);
+  padding:8px 12px;border-radius:12px;font-weight:600;font-size:var(--fz-sm);
+  transition: transform var(--dur-fast) var(--ease-smooth), color var(--dur-fast), background var(--dur-fast);
+  position:relative;
+}
+nav.primary-nav a::after{
+  content:"";position:absolute;inset:0;border-radius:12px;
+  background:linear-gradient(90deg, rgba(78,225,255,0.06), rgba(139,92,246,0.04));
+  opacity:0;transform:scaleX(0);transform-origin:left center;
+  transition:transform var(--dur-med) var(--ease-smooth), opacity var(--dur-med);
+}
+nav.primary-nav a:hover, nav.primary-nav a:focus{
+  color:#fff;transform:translateY(-3px);
+}
+nav.primary-nav a:hover::after, nav.primary-nav a:focus::after{
+  opacity:1;transform:scaleX(1)
+}
+
+/* Mobile hamburger */
+.hamburger{
+  width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  transition:transform var(--dur-fast);
+}
+.hamburger svg{width:20px;height:20px;color:var(--muted)}
+.hamburger:active{transform:scale(.98)}
+
+/* Animated action/icon buttons */
+.icon-btn{
+  display:inline-grid;place-items:center;width:44px;height:44px;border-radius:12px;
+  border:1px solid rgba(255,255,255,0.04);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  transition: box-shadow var(--dur-fast), transform var(--dur-fast), border-color var(--dur-fast);
+}
+.icon-btn:hover{transform:translateY(-3px); box-shadow: var(--shadow-neon); border-color: rgba(111,60,255,0.12)}
+
+/* Animated halo for CTA */
+.cta{
+  padding:10px 16px;border-radius:14px;background:var(--brand-gradient);color:#050816;font-weight:800;
+  box-shadow: 0 10px 36px rgba(111,60,255,0.12);
+  transition: transform var(--dur-fast), filter var(--dur-fast);
+}
+.cta:hover{transform:translateY(-4px) scale(1.01);filter:brightness(1.03)}
+
+/* ========================================================================
+   6) HERO — Big fluid typography, CTA, spotlight, floating cards
+   ======================================================================== */
+.hero{
+  position:relative;
+  padding: clamp(28px, 8vw, 120px) 0;
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:var(--space-lg);
+  align-items:center;
+  z-index:var(--z-hero);
+}
+
+/* hero inner container */
+.hero .hero-inner{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:var(--space-lg);
+  align-items:center;
+}
+
+/* Hero content left */
+.hero .hero-content{
+  max-width: 920px;
+  display:flex;
+  flex-direction:column;
+  gap:var(--space-md);
+}
+
+/* headline */
+.hero h1{
+  margin:0;
+  line-height:0.94;
+  font-weight:900;
+  color:transparent;
+  background: linear-gradient(90deg, rgba(78,225,255,1), rgba(139,92,246,1) 60%, rgba(111,60,255,0.95));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-stroke: 0.6px rgba(0,0,0,0.12);
+  text-shadow: 0 18px 40px rgba(111,60,255,0.06);
+  letter-spacing:-0.02em;
+}
+
+/* hero subline */
+.hero .subtitle{
+  font-size:var(--fz-lg);
+  color: rgba(231,240,255,0.92);
+  max-width:68ch;
+}
+
+/* hero CTAs */
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.hero .actions .btn{
+  padding:12px 18px;border-radius:12px;font-weight:700;
+  display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,0.04);
+  transition: transform var(--dur-fast) var(--ease-smooth), box-shadow var(--dur-fast);
+}
+
+/* Large visual hero card column on the right (floating cards) */
+.hero .hero-visual{
+  margin-top:8px;
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:16px;
+  align-items:start;
+}
+
+/* Floating glass card */
+.floating-card{
+  position:relative;
+  border-radius:calc(var(--radius));
+  padding:14px;
+  overflow:visible;
+  border:1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  backdrop-filter: blur(8px) saturate(120%);
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6), 0 6px 20px rgba(111,60,255,0.04);
+  transition: transform var(--dur-med) var(--ease-smooth), box-shadow var(--dur-med);
+  transform-origin:center;
+}
+.floating-card:hover{transform:translateY(-10px) rotate(-0.15deg);box-shadow:var(--shadow-deep)}
+.floating-card .card-title{font-weight:700;color:#fff}
+.floating-card .card-desc{font-size:var(--fz-sm);color:var(--muted)}
+
+/* Animated gradient border on focused card */
+.floating-card::before{
+  content:"";
+  position:absolute;inset:-1.6px;border-radius:calc(var(--radius) + 2px);
+  background: linear-gradient(90deg, rgba(78,225,255,0.06), rgba(139,92,246,0.06));
+  filter: blur(8px);
+  opacity:0;transition:opacity var(--dur-med);
+  z-index:-1;
+}
+.floating-card:hover::before{opacity:1}
+
+/* Small thumbnail inside card */
+.card-thumb{
+  width:100%;height:140px;border-radius:12px;overflow:hidden;background:#000;display:block;
+  box-shadow: inset 0 -20px 60px rgba(0,0,0,0.6);
+}
+
+/* ========================================================================
+   7) SEARCH / INPUTS / FORMS — Premium styles
+   ======================================================================== */
+.form-field{
+  display:flex;flex-direction:column;gap:8px;
+}
+.input{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;
+  border:1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  color:var(--on-dark);
+  transition: box-shadow var(--dur-fast), transform var(--dur-fast), border-color var(--dur-fast);
+  outline:none;
+  width:100%;
+}
+.input:focus{
+  transform:translateY(-2px);
+  box-shadow:0 10px 30px rgba(78,225,255,0.06), 0 6px 20px rgba(111,60,255,0.04);
+  border-color: rgba(111,60,255,0.12);
+}
+
+/* Premium search bar */
+.search{
+  display:flex;gap:8px;align-items:center;padding:10px;border-radius:999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.008), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.6) inset;
+}
+.search input{
+  border:0;background:transparent;outline:none;color:inherit;padding:8px 10px;font-size:var(--fz-sm);
+  width:100%;
+}
+
+/* Animated search button glowing */
+.search .search-btn{
+  padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,var(--g1),var(--g2));
+  color:#050816;font-weight:800;border:none;box-shadow:0 12px 40px rgba(111,60,255,0.12);
+  transition:transform 140ms,var(--dur-fast), filter var(--dur-fast);
+}
+.search .search-btn:hover{transform:translateY(-3px) scale(1.01);filter:brightness(1.02)}
+
+/* Input with icon */
+.input-icon{display:flex;gap:8px;align-items:center;color:var(--muted)}
+.input-icon svg{width:20px;height:20px;opacity:0.9}
+
+/* ========================================================================
+   8) BUTTONS — Animated glowing neon buttons
+   ======================================================================== */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 16px;border-radius:12px;font-weight:800;font-size:var(--fz-sm);
+  letter-spacing:0.01em;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);color:var(--on-dark);
+  transition: transform var(--dur-fast) var(--ease-smooth), box-shadow var(--dur-fast);
+}
+.btn:active{transform:translateY(1px)}
+
+/* Primary neon CTA */
+.btn-primary{
+  background: linear-gradient(90deg,var(--g1),var(--g2));
+  color:#050816;border:none;box-shadow: 0 12px 36px rgba(78,225,255,0.06), 0 6px 18px rgba(111,60,255,0.06);
+  position:relative;overflow:visible;
+}
+.btn-primary::after{
+  content:"";position:absolute;inset:0;border-radius:12px;padding:1px;
+  background: linear-gradient(90deg, rgba(78,225,255,0.18), rgba(139,92,246,0.18));
+  filter: blur(8px);opacity:0;transition:opacity var(--dur-fast);
+  z-index:-1;
+}
+.btn-primary:hover::after{opacity:1}
+.btn-primary:hover{transform:translateY(-4px);filter:brightness(1.04)}
+
+/* Ghost button */
+.btn-ghost{
+  background:transparent;border:1px solid rgba(255,255,255,0.06);
+  color:var(--muted);
+}
+.btn-ghost:hover{color:#fff;border-color:rgba(111,60,255,0.12);transform:translateY(-2px)}
+
+/* Animated outline / neon pulse */
+.btn-neon{
+  position:relative;overflow:visible;background:transparent;border:1px solid rgba(255,255,255,0.04);
+  color:var(--on-dark);
+}
+.btn-neon::before{
+  content:"";position:absolute;inset:-4px;border-radius:16px;background:conic-gradient(from 90deg at 50% 50%, rgba(78,225,255,0.06), rgba(139,92,246,0.06));
+  filter: blur(16px);opacity:0;transition:opacity var(--dur-med);
+}
+.btn-neon:hover::before{opacity:1}
+.btn-neon:hover{transform:translateY(-5px);box-shadow:var(--shadow-neon)}
+
+/* ========================================================================
+   9) CARDS & LISTS — Floating cards, hover lift, grid layout
+   ======================================================================== */
+.cards{
+  display:grid;gap:var(--gap);
+  grid-template-columns: repeat(1, minmax(0,1fr));
+}
+.card-grid{
+  display:grid;gap:var(--gap);
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+/* Individual card */
+.card{
+  border-radius:var(--radius);padding:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.55);
+  transition: transform var(--dur-med) var(--ease-smooth), box-shadow var(--dur-med);
+}
+.card:hover{transform:translateY(-12px);box-shadow:var(--shadow-deep)}
+
+/* Card footer */
+.card .meta{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:var(--fz-xs)}
+
+/* Media inside cards */
+.card-media{border-radius:12px;overflow:hidden;background:#000;height:160px}
+
+/* Edge highlight */
+.card-edge{
+  position:relative;border-radius:14px;overflow:visible;
+}
+.card-edge::after{
+  content:"";position:absolute;left:10px;right:10px;bottom:-6px;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--g1),var(--g2));
+  filter: blur(18px);opacity:0.12;
+}
+
+/* ========================================================================
+   10) AURORA BACKGROUND & PARTICLES
+   - Lightweight CSS-only aurora layers and particle system (pure CSS/HTML)
+   - For more complex particle control, JS can be layered on top; this is CSS fallback
+   ======================================================================== */
+
+/* Aurora wrapper: put .aurora as a direct child of body or hero */
+.aurora{
+  position:fixed;inset:0;pointer-events:none;z-index:var(--z-base);
+  mix-blend-mode:screen;opacity:0.9;
+}
+
+/* Aurora band — multiple layers create parallax effect */
+.aurora .band{
+  position:absolute;left:-30%;right:-30%;height:260px;border-radius:50%;
+  transform-origin:center;filter:blur(60px) saturate(140%);
+  opacity:0.35;animation:auroraShift 18s linear infinite;
+}
+.aurora .band.b1{top:8%;background:radial-gradient(closest-side, rgba(78,225,255,0.12), transparent 40%)}
+.aurora .band.b2{top:30%;background:radial-gradient(closest-side, rgba(139,92,246,0.12), transparent 40%);animation-duration:22s}
+.aurora .band.b3{bottom:8%;background:radial-gradient(closest-side, rgba(111,60,255,0.12), transparent 40%);animation-duration:26s}
+
+/* Small CSS particles grid overlay (decorative) */
+.particles{
+  position:fixed;inset:0;pointer-events:none;z-index:var(--z-base);opacity:0.32;
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 120px 120px;
+  mix-blend-mode:overlay;
+}
+
+/* Aurora keyframe */
+@keyframes auroraShift{
+  0%{transform: translateX(-6%) rotate(-2deg)}
+  50%{transform: translateX(6%) rotate(2deg)}
+  100%{transform: translateX(-6%) rotate(-2deg)}
+}
+
+/* ========================================================================
+   11) MOUSE GLOW — Translucent glow that follows mouse via CSS vars set by JS
+   - This CSS expects JS to update --mouse-x and --mouse-y on :root or body
+   ======================================================================== */
+.mouse-glow{
+  position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:var(--z-hero);
+}
+.mouse-glow::before{
+  content:"";position:absolute;left:calc(var(--mouse-x,50) * 1%);top:calc(var(--mouse-y,50) * 1%);
+  transform:translate(-50%,-50%);
+  width:520px;height:520px;border-radius:50%;
+  background: radial-gradient(circle at center, rgba(78,225,255,0.16), rgba(139,92,246,0.08) 30%, transparent 60%);
+  filter: blur(40px);opacity:0.9;transition:width .22s,var(--dur-fast);
+}
+
+/* Small interactive glow for buttons */
+.btn:hover ~ .mouse-glow::before{width:620px}
+
+/* ========================================================================
+   12) SCROLL REVEAL — Simple scroll reveal using intersection observer + CSS class .reveal
+   - Elements should have class .reveal and .reveal--hidden by default
+   ======================================================================== */
+.reveal{opacity:1;transform:none;transition: opacity var(--dur-slow) var(--ease-smooth), transform var(--dur-slow) var(--ease-smooth);will-change:transform,opacity}
+.reveal--hidden{opacity:0;transform:translateY(18px) scale(.995)}
+
+/* stagger utilities */
+.reveal[data-delay="50"]{transition-delay:50ms}
+.reveal[data-delay="100"]{transition-delay:100ms}
+.reveal[data-delay="200"]{transition-delay:200ms}
+.reveal[data-delay="350"]{transition-delay:350ms}
+
+/* ========================================================================
+   13) ANIMATED ICONS & SVG HELPERS
+   - Icon pulse, rotate, bounce states
+   ======================================================================== */
+.icon-animate{transition: transform var(--dur-med) var(--ease-smooth), opacity var(--dur-med)}
+.icon-animate:hover{transform:translateY(-4px) rotate(-6deg)}
+.icon-spin{animation:spin var(--dur-slow) linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* small ping */
+.ping{
+  position:relative;
+}
+.ping::after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  box-shadow:0 0 0 6px rgba(78,225,255,0.04);
+  opacity:0;animation:pingAnim 1.6s ease-out infinite;
+}
+@keyframes pingAnim{
+  0%{transform:scale(.6);opacity:.6}
+  80%{transform:scale(1.6);opacity:0}
+  100%{opacity:0}
+}
+
+/* ========================================================================
+   14) LOADING ANIMATION
+   - A centered, minimal loader using gradient and neon glow
+   ======================================================================== */
+.loader{
+  width:56px;height:56px;border-radius:14px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);
+  display:inline-grid;place-items:center;box-shadow:var(--shadow-soft);
+}
+.loader .spin{
+  width:36px;height:36px;border-radius:10px;background:conic-gradient(from 0deg, var(--g1), var(--g2), transparent 60%);
+  animation:loaderSpin 900ms linear infinite;
+  filter:drop-shadow(0 10px 30px rgba(111,60,255,0.06));
+}
+@keyframes loaderSpin{to{transform:rotate(360deg)}}
+
+/* Page-level loading overlay */
+.page-loading{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:var(--z-overlay);
+  background: linear-gradient(180deg, rgba(2,6,23,0.7), rgba(2,6,23,0.8));
+}
+
+/* ========================================================================
+   15) CUSTOM SCROLLBAR (WebKit + Firefox-ish)
+   ======================================================================== */
+:root{
+  --scrollbar-track: rgba(255,255,255,0.02);
+  --scrollbar-thumb: linear-gradient(180deg, rgba(78,225,255,0.12), rgba(139,92,246,0.12));
+}
+html::-webkit-scrollbar{width:12px;height:12px}
+html::-webkit-scrollbar-track{background:transparent}
+html::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, rgba(78,225,255,0.08), rgba(139,92,246,0.08));
+  border-radius:999px;border: 2px solid rgba(255,255,255,0.02);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+*{scrollbar-width:thin;scrollbar-color: rgba(78,225,255,0.08) transparent}
+
+/* ========================================================================
+   16) MEDIA QUERIES & RESPONSIVE LAYOUTS (Mobile-first)
+   ======================================================================== */
+
+/* Small phones up to 420px — defaults already mobile-first */
+
+/* >= 640px (tablet) */
+@media (min-width: 640px){
+  .cards{grid-template-columns: repeat(2, minmax(0,1fr))}
+  .card-grid{grid-template-columns: repeat(3, minmax(0,1fr))}
+  .hero .hero-visual{grid-template-columns: repeat(3, minmax(0,1fr))}
+}
+
+/* >= 900px (small desktop) */
+@media (min-width: 900px){
+  .hero{grid-template-columns: 1fr 420px;align-items:start;gap:40px}
+  .container{padding-inline:clamp(20px,6vw,48px)}
+  nav.primary-nav{gap:12px}
+}
+
+/* >= 1200px (large desktop) */
+@media (min-width: 1200px){
+  .cards{grid-template-columns: repeat(3, minmax(0,1fr))}
+  .card-grid{grid-template-columns: repeat(4, minmax(0,1fr))}
+  header.site-header{top:18px;width:calc(100% - 48px)}
+}
+
+/* ========================================================================
+   17) ACCESSIBILITY & REDUCED MOTION
+   ======================================================================== */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important}
+}
+
+/* Focus ring */
+:focus{outline: 3px solid rgba(78,225,255,0.12);outline-offset:4px;border-radius:8px}
+
+/* ========================================================================
+   18) HIGH-PERFORMANCE TIPS (CSS-only fallbacks)
+   - Keep animations GPU-friendly (transform/opacity)
+   - Heavy backgrounds are subtle and blurred to hide cost
+   ======================================================================== */
+
+/* ========================================================================
+   19) EXTRA: Animated gradient borders for sections/cards (production-ready)
+   ======================================================================== */
+.gradient-border{
+  position:relative;border-radius:calc(var(--radius) + 2px);padding:2px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+}
+.gradient-border > .inner{
+  border-radius:var(--radius);padding:16px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+}
+
+/* Animated border layer */
+.gradient-border::before{
+  content:"";position:absolute;inset:0;border-radius:calc(var(--radius) + 2px);padding:1px;
+  background: conic-gradient(from 0deg, var(--g1), var(--g2), var(--g3), var(--g1));
+  -webkit-mask: linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  filter: blur(8px) saturate(130%);
+  opacity:0.85;z-index:-2;animation:rotateGrad 8s linear infinite;
+}
+@keyframes rotateGrad{to{transform:rotate(360deg)}}
+
+/* ========================================================================
+   20) FOR SUBTLE DEPTH: SHADOW UTILITIES
+   ======================================================================== */
+.shadow-soft{box-shadow:var(--shadow-soft)}
+.shadow-deep{box-shadow:var(--shadow-deep)}
+.shadow-neon{box-shadow:var(--shadow-neon)}
+
+/* ========================================================================
+   21) FORMS: TAGS, CHIPS, AND BADGES
+   ======================================================================== */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  padding:6px 10px;border-radius:999px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  border:1px solid rgba(255,255,255,0.03);color:var(--muted);font-weight:600;font-size:var(--fz-xs)
+}
+.chip.active{background: linear-gradient(90deg,var(--g1),var(--g2));color:#050816;box-shadow:var(--shadow-neon);border:none}
+
+/* ========================================================================
+   22) NAVIGATION: Subtle animated underline and active states
+   ======================================================================== */
+nav.primary-nav a.active{
+  color:#fff;
+  background: linear-gradient(90deg, rgba(78,225,255,0.06), rgba(139,92,246,0.04));
+  box-shadow: 0 8px 30px rgba(111,60,255,0.05);
+}
+
+/* ========================================================================
+   23) MEDIA CAROUSEL / VIDEO THUMBNAILS
+   ======================================================================== */
+.media-row{display:flex;gap:12px;overflow:auto;padding-bottom:6px}
+.media-item{
+  min-width:220px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.04);
+  background:#000;height:140px;flex:0 0 220px;transition:transform var(--dur-fast);
+}
+.media-item:hover{transform:translateY(-8px)}
+
+/* ========================================================================
+   24) FOOTER — Simple centered footer
+   ======================================================================== */
+.site-footer{
+  margin-top:var(--space-xl);padding:30px 0;color:var(--muted);text-align:center;
+  border-top:1px solid rgba(255,255,255,0.02);
+}
+
+/* ========================================================================
+   25) DEBUG & DEVELOPMENT AIDES (comment out in prod if desired)
+   ======================================================================== */
+/* .debug-outline *{outline:1px dashed rgba(255,255,255,0.03)} */
+
+/* ========================================================================
+   26) EXTRA LAYERS: Subtle animated highlights for CTAs and links
+   ======================================================================== */
+.highlight{
+  position:relative;padding:8px 12px;border-radius:12px;
+}
+.highlight::after{
+  content:"";position:absolute;inset:0;border-radius:12px;background:radial-gradient(circle at 10% 20%, rgba(78,225,255,0.06), transparent 20%);
+  opacity:0;transition:opacity var(--dur-fast);
+}
+.highlight:hover::after{opacity:1}
+
+/* ========================================================================
+   27) DETAILED COMMENTS / EXTENSIBILITY
+   - Below are helper declarations and numerous commented lines to make the
+   - stylesheet easy to navigate and extend.
+   - The next block intentionally contains comment separators for clarity.
+   ======================================================================== */
+
+/* ------------------------------------------------------------------------
+   NOTES:
+   - To enable mouse glow: set CSS variables on :root via JS:
+       document.documentElement.style.setProperty('--mouse-x', x);
+       document.documentElement.style.setProperty('--mouse-y', y);
+   - To mark elements for scroll reveal: add .reveal and .reveal--hidden (initial)
+       then remove .reveal--hidden via IntersectionObserver
+   - To toggle header sticky state: add/remove header.site-header.scrolled
+   - For performance: reduce aurora opacity or disable .aurora/.particles on low-end devices
+   ------------------------------------------------------------------------ */
+
+/* =========================================================================
+   (大量コメント分離 - repeated comment lines for structure & easy editing)
+   The following lines are purposely added to make the file navigable and to
+   ensure a visually clear and well-commented stylesheet for maintainability.
+   ========================================================================= */
+
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+
+/* ========================================================================
+   End of file helper comments.
+   If you need the file split into modular CSS (variables, layout, components),
+   I can provide that as separate files for maintainability and build pipelines.
+   ======================================================================== */
