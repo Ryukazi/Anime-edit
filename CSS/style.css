@@ -1,95 +1,118 @@
-/* Global Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Modernized stylesheet for Anime-edit
+   - CSS variables for easy theming
+   - Responsive layout and grid
+   - Glassmorphism cards with hover/scale
+   - Smooth transitions and subtle animations
+   - Dark / light support via body.dark-mode
+*/
+:root{
+  --bg: #0f1720; /* deep background */
+  --panel: rgba(255,255,255,0.04);
+  --muted: #9aa4b2;
+  --accent: linear-gradient(90deg,#ff2d55,#8b5cf6);
+  --accent-plain: #ff2d55;
+  --glass: rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.06);
+  --radius: 12px;
+  --max-width: 1100px;
+  --gap: 18px;
 }
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #141414;
-  color: white;
-  transition: background-color 0.3s ease;
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family: Inter, 'Segoe UI', Roboto, system-ui, -apple-system, 'Helvetica Neue', Arial;
+  background: var(--bg);
+  color:#e6eef8;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.35;
+  transition:background-color .25s ease,color .25s ease;
 }
 
-header {
-  padding: 10px;
-  background-color: #1d1d1d;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Layout */
+header{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  backdrop-filter: blur(6px);
+}
+header nav{
+  max-width:var(--max-width);
+  margin:0 auto;display:flex;align-items:center;gap:12px;padding:18px;
+  justify-content:space-between;
+}
+.logo{height:46px;display:block}
+
+/* Controls */
+.controls{
+  display:flex;gap:10px;align-items:center;
+}
+#toggleMode{
+  background:transparent;border:1px solid var(--glass-border);color:var(--muted);
+  padding:8px 12px;border-radius:999px;cursor:pointer;font-weight:600;
+}
+#toggleMode:hover{color:#fff;border-color:rgba(255,255,255,0.12)}
+
+/* Main content container */
+main{max-width:var(--max-width);margin:28px auto;padding:0 18px}
+
+.search-container{
+  display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:24px;
+}
+.search-container input[type="text"]{
+  flex:1;max-width:720px;padding:14px 16px;border-radius:999px;border:1px solid var(--glass-border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:inherit;
+  box-shadow:0 6px 18px rgba(2,6,23,0.6) inset;outline:none;transition:box-shadow .18s ease,transform .12s ease;
+}
+.search-container input[type="text"]:focus{box-shadow:0 8px 28px rgba(0,0,0,0.6),0 0 0 6px rgba(255,45,85,0.04);transform:translateY(-1px)}
+.search-container button{
+  padding:10px 16px;border-radius:10px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-weight:700;
+  box-shadow:0 8px 20px rgba(139,92,246,0.14);transition:transform .12s ease,filter .12s ease;
+}
+.search-container button:hover{transform:translateY(-2px);filter:brightness(1.02)}
+
+/* Results grid */
+.result{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--gap);
+}
+.video-item{
+  background:linear-gradient(180deg,rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid var(--glass-border);border-radius:var(--radius);overflow:hidden;position:relative;
+  padding:10px;display:flex;flex-direction:column;gap:12px;transition:transform .18s ease,box-shadow .18s ease;
+}
+.video-item:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 12px 40px rgba(2,6,23,0.6)}
+.video-thumb{width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000}
+.video-thumb video{width:100%;height:100%;object-fit:cover;display:block}
+
+.video-meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.title{font-weight:700;color:#fff;font-size:0.98rem}
+.meta{color:var(--muted);font-size:0.85rem}
+
+/* Footer */
+footer{max-width:var(--max-width);margin:36px auto 80px;padding:0 18px;color:var(--muted);text-align:center}
+
+/* Small screens */
+@media (max-width:640px){
+  nav{padding:12px}
+  .logo{height:38px}
+  .search-container{flex-direction:column;padding:0 12px}
+  .search-container input{max-width:100%;width:100%}
+  .search-container button{width:100%}
 }
 
-header .logo {
-  width: 100px;
+/* Light mode override (when body has .light-mode) */
+body.light-mode{
+  --bg: #f7f9fc;--panel: rgba(0,0,0,0.03);--muted:#475569;--glass-border:rgba(0,0,0,0.06);color:#0b1220
 }
+body.light-mode header{background:rgba(255,255,255,0.9);box-shadow:0 6px 18px rgba(12,20,40,0.04)}
+body.light-mode .search-container input{background:#fff;box-shadow:0 6px 18px rgba(16,24,40,0.04) inset}
+body.light-mode .video-item{background:#fff;border:1px solid rgba(12,20,40,0.04);box-shadow:0 8px 24px rgba(16,24,40,0.04)}
 
-button {
-  background-color: #fe2c55;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+/* Dark-mode subtle tweaks (applied when .dark-mode present on body) */
+body.dark-mode{--bg:#07070a;--muted:#9aa4b2;--glass-border:rgba(255,255,255,0.05)}
 
-button:hover {
-  background-color: #f42b53;
-}
+/* Tiny utility */
+.center{display:flex;justify-content:center;align-items:center}
 
-.search-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.search-container input {
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  width: 70%;
-  margin-right: 10px;
-}
-
-.result {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 20px;
-}
-
-.video-item {
-  background-color: #1a1a1a;
-  padding: 15px;
-  margin: 15px;
-  width: 300px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-video {
-  width: 100%;
-  border-radius: 10px;
-}
-
-/* Dark Mode */
-body.dark-mode {
-  background-color: #121212;
-}
-
-header.dark-mode {
-  background-color: #222;
-}
-
-button.dark-mode {
-  background-color: #fe2c55;
-}
-
-button.dark-mode:hover {
-  background-color: #f42b53;
-}
-
-footer {
-  text-align: center;
-  margin-top: 50px;
-  }
+/* Accessibility: focus visible */
+:focus{outline:2px dashed rgba(255,45,85,0.18);outline-offset:3px}
